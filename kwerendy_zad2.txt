@@ -1,0 +1,13 @@
+Zadanie 1
+DELETE FROM postac WHERE wiek=35;
+DELETE FROM postac WHERE wiek=37;
+
+ALTER TABLE walizka DROP FOREIGN KEY walizka_ibfk_1;
+ALTER TABLE przetwory DROP FOREIGN KEY przetwory_ibfk_1;
+ALTER TABLE przetwory DROP FOREIGN KEY przetwory_ibfk_2;
+
+ALTER TABLE postac MODIFY id_postaci INT NOT NULL;
+ALTER TABLE postac DROP PRIMARY KEY;
+
+Zadanie 2
+
