@@ -25,4 +25,4 @@ Zadanie 5
 SELECT waga*0.7 AS masaWlasciwa, waga*0.3 AS odpadki from zasob WHERE rodzaj='jedzenie';
 
 SELECT * FROM zasob WHERE rodzaj IS NULL;
-SELECT DISTINCT rodzaj FROM zasob WHERE nazwa LIKE 'Ba%' OR '%os';
+SELECT DISTINCT rodzaj FROM zasob WHERE nazwa LIKE 'Ba%' OR nazwa LIKE '%os';
