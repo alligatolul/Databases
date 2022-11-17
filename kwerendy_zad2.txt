@@ -29,7 +29,7 @@ UPDATE postac SET statek= 'dragon' WHERE nazwa LIKE '%a%';
 
 UPDATE statek SET max_ladownosc= max_ladownosc*0.7 WHERE data_wodowania BETWEEN '2001-01-01' AND '1900-12-31';
 
-ALTER TABLE postac MODIFY wiek int unsigned CHECK(wiek<1000);
+ALTER TABLE postac ADD CHECK(wiek<=1000);
 
 Zadanie 4
 
@@ -42,7 +42,7 @@ INSERT INTO marynarz SELECT * FROM postac WHERE statek IS NOT NULL;
 
 Zadanie 5 
 UPDATE marynarz SET statek = NULL;
-
+DELETE FROM marynarz WHERE rodzaj ='wiking' AND nazwa !='Bjorn' LIMIT 1;
 ALTER TABLE postac DROP FOREIGN KEY postac_ibfk_1;
 DELETE FROM statek;
 DROP TABLE statek;
