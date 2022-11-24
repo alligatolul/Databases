@@ -1,0 +1,38 @@
+Zadanie 1.
+SELECT AVG(waga) as srednia_waga FROM kreatura WHERE rodzaj='wiking';
+
+SELECT AVG(waga) as srednia_waga, COUNT(nazwa) as ilosc_kreatur, rodzaj FROM kreatura GROUP BY rodzaj;
+
+SELECT AVG(YEAR(NOW())-YEAR(dataUr)) as sredni_wiek, rodzaj FROM kreatura GROUP BY rodzaj;
+
+Zadanie 2.
+SELECT rodzaj, SUM(waga*ilosc) as waga_zasobu FROM zasob GROUP BY rodzaj;
+
+SELECT nazwa, AVG(waga*ilosc) AS srednia_waga FROM zasob WHERE ilosc>3 GROUP BY nazwa HAVING SUM(waga*ilosc)>10; NIE WIEM JAK TO
+SELECT nazwa, AVG(waga) AS srednia_waga FROM zasob WHERE ilosc>3 GROUP BY nazwa HAVING SUM(waga*ilosc)>10; NIE WIEM JAK TO
+
+SELECT COUNT(DISTINCT nazwa)AS unikalne_nazwy, rodzaj FROM zasob WHERE ilosc>1 GROUP BY rodzaj; NIE WIEM JAK TO ZROBIC
+
+Zadanie 3.
+SELECT nazwa, SUM(ilosc) as ilosc_zasobow FROM kreatura, ekwipunek WHERE kreatura.idKreatury=ekwipunek.idKreatury GROUP BY nazwa;
+SELECT nazwa, SUM(ilosc) as ilosc_zasobow FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury GROUP BY nazwa;
+
+SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu ORDER BY kreatura.nazwa;
+
+SELECT nazwa FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury WHERE idZasobu IS NULL;
+
+Zadanie 4.
+SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu  WHERE dataUr BETWEEN '1670-01-01' AND '1679-12-31' AND kreatura.rodzaj = 'wiking' ORDER BY kreatura.nazwa;
+
+SELECT kreatura.nazwa FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE zasob.rodzaj='jedzenie' ORDER BY dataUr DESC LIMIT 5;
+
+SELECT CONCAT(nazwa, '-', (SELECT nazwa FROM kreatura WHERE idKreatury= idKreatury+5)) FROM kreatura; NIE WIEM JAK TO ZROBIC
+
+
+Zadanie 5.
+SELECT kreatura.rodzaj, AVG(zasob.waga*zasob.ilosc*ekwipunek.ilosc) AS srednia_waga FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE kreatura.rodzaj <>'waz' AND kreatura.rodzaj <>'malpa' GROUP BY kreatura.rodzaj HAVING(SUM(ekwipunek.ilosc)<30); NIE WIEM JAK
+
+SELECT kreatura.rodzaj, AVG(zasob.waga*zasob.ilosc*ekwipunek.ilosc) AS srednia_waga FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE kreatura.rodzaj <>'waz' AND kreatura.rodzaj <>'malpa' GROUP BY kreatura.nazwa HAVING(SUM(ekwipunek.ilosc)<30); TO CO WYZEJ
+ 
+SELECT kreatura.rodzaj, SUM(zasob.waga*zasob.ilosc*ekwipunek.ilosc) AS srednia_waga FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE kreatura.rodzaj <>'waz' AND kreatura.rodzaj <>'malpa' GROUP BY kreatura.nazwa HAVING(SUM(ekwipunek.ilosc)<30);
+
