@@ -26,13 +26,18 @@ SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON kreatura.idKr
 
 SELECT kreatura.nazwa FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE zasob.rodzaj='jedzenie' ORDER BY dataUr DESC LIMIT 5;
 
-SELECT CONCAT(nazwa, '-', (SELECT nazwa FROM kreatura WHERE idKreatury= idKreatury+5)) FROM kreatura; NIE WIEM JAK TO ZROBIC
+SELECT kreatura.rodzaj, AVG(zasob.waga*zasob.ilosc) AS 'srednia waga zasobu' FROM kreatura JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu= zasob.idZasobu WHRERE kreatura.rodzaj!='waz' AND kreatura.rodzaj !='malpa' AND SUM(ekwipunek.ilosc)<30 GROUP BY kreatura.rodzaj;
 
 
-Zadanie 5.
-SELECT kreatura.rodzaj, AVG(zasob.waga*zasob.ilosc*ekwipunek.ilosc) AS srednia_waga FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE kreatura.rodzaj <>'waz' AND kreatura.rodzaj <>'malpa' GROUP BY kreatura.rodzaj HAVING(SUM(ekwipunek.ilosc)<30); NIE WIEM JAK
 
-SELECT kreatura.rodzaj, AVG(zasob.waga*zasob.ilosc*ekwipunek.ilosc) AS srednia_waga FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE kreatura.rodzaj <>'waz' AND kreatura.rodzaj <>'malpa' GROUP BY kreatura.nazwa HAVING(SUM(ekwipunek.ilosc)<30); TO CO WYZEJ
- 
-SELECT kreatura.rodzaj, SUM(zasob.waga*zasob.ilosc*ekwipunek.ilosc) AS srednia_waga FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE kreatura.rodzaj <>'waz' AND kreatura.rodzaj <>'malpa' GROUP BY kreatura.nazwa HAVING(SUM(ekwipunek.ilosc)<30);
+(SELECT nazwa, dataUr, rodzaj FROM kreatura WHERE rodzaj='wiking' ORDER BY dataUr ASC LIMIT 8,1) UNION
+(SELECT nazwa, dataUr, rodzaj FROM kreatura WHERE rodzaj='wiking' ORDER BY dataUr ASC LIMIT 1);
+
+
+SELECT nazwa, dataUr, rodzaj FROM kreatura WHERE rodzaj='wiking' ORDER BY dataUr DESC LIMIT 1;
+
+SELECT nazwa, dataUr, rodzaj FROM kreatura WHERE dataUr=(SELECT MIN(dataUr) FROM kreatura) OR dataUr=(SELECT MAX(dataUr) FROM kreatura);
+
+
+
 
