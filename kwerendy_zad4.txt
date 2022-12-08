@@ -6,16 +6,11 @@ SELECT AVG(waga) as srednia_waga, COUNT(nazwa) as ilosc_kreatur, rodzaj FROM kre
 SELECT AVG(YEAR(NOW())-YEAR(dataUr)) as sredni_wiek, rodzaj FROM kreatura GROUP BY rodzaj;
 
 Zadanie 2.
-SELECT rodzaj, SUM(waga*ilosc) as waga_zasobu FROM zasob GROUP BY rodzaj;
-
-SELECT nazwa, AVG(waga*ilosc) AS srednia_waga FROM zasob WHERE ilosc>3 GROUP BY nazwa HAVING SUM(waga*ilosc)>10; NIE WIEM JAK TO
-
-SELECT nazwa, AVG(waga) AS srednia_waga FROM zasob WHERE ilosc>3 GROUP BY nazwa HAVING SUM(waga*ilosc)>10; NIE WIEM JAK TO
+SELECT rodzaj, SUM(waga) as waga_zasobu FROM zasob GROUP BY rodzaj;
 
 SELECT nazwa, AVG(waga) as 'srednia waga' FROM zasob WHERE ilosc > 3 GROUP BY nazwa HAVING SUM(waga)>10;
 
-
-SELECT COUNT(DISTINCT nazwa)AS unikalne_nazwy, rodzaj FROM zasob GROUP BY rodzaj HAVING MIN(ilosc)>1;
+SELECT COUNT(DISTINCT nazwa)AS unikalne_nazwy, rodzaj FROM zasob GROUP BY rodzaj HAVING COUNT(*)>1;
 
 
 Zadanie 3.
