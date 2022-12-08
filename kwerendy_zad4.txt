@@ -9,9 +9,14 @@ Zadanie 2.
 SELECT rodzaj, SUM(waga*ilosc) as waga_zasobu FROM zasob GROUP BY rodzaj;
 
 SELECT nazwa, AVG(waga*ilosc) AS srednia_waga FROM zasob WHERE ilosc>3 GROUP BY nazwa HAVING SUM(waga*ilosc)>10; NIE WIEM JAK TO
+
 SELECT nazwa, AVG(waga) AS srednia_waga FROM zasob WHERE ilosc>3 GROUP BY nazwa HAVING SUM(waga*ilosc)>10; NIE WIEM JAK TO
 
-SELECT COUNT(DISTINCT nazwa)AS unikalne_nazwy, rodzaj FROM zasob WHERE ilosc>1 GROUP BY rodzaj; NIE WIEM JAK TO ZROBIC
+SELECT nazwa, AVG(waga) as 'srednia waga' FROM zasob WHERE ilosc > 3 GROUP BY nazwa HAVING SUM(waga)>10;
+
+
+SELECT COUNT(DISTINCT nazwa)AS unikalne_nazwy, rodzaj FROM zasob GROUP BY rodzaj HAVING MIN(ilosc)>1;
+
 
 Zadanie 3.
 SELECT nazwa, SUM(ilosc) as ilosc_zasobow FROM kreatura, ekwipunek WHERE kreatura.idKreatury=ekwipunek.idKreatury GROUP BY nazwa;
@@ -26,18 +31,17 @@ SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON kreatura.idKr
 
 SELECT kreatura.nazwa FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE zasob.rodzaj='jedzenie' ORDER BY dataUr DESC LIMIT 5;
 
-SELECT kreatura.rodzaj, AVG(zasob.waga*zasob.ilosc) AS 'srednia waga zasobu' FROM kreatura JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu= zasob.idZasobu WHRERE kreatura.rodzaj!='waz' AND kreatura.rodzaj !='malpa' AND SUM(ekwipunek.ilosc)<30 GROUP BY kreatura.rodzaj;
+
+SELECT CONCAT(s.nazwa,'-', (SELECT nazwa FROM kreatura e WHERE e.idKreatury=s.idKreatury+5)) FROM kreatura s INNER JOIN kreatura e ON s.idKreatury=e.idKreatury;
+
+Zadanie 5.
+
+mysql> SELECT kreatura.rodzaj, AVG(zasob.waga*zasob.ilosc) AS 'srednia waga zasobu' FROM kreatura JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu= zasob.idZasobu WHERE kreatura.rodzaj NOT IN('malpa','waz') GROUP BY rodzaj HAVING SUM(ekwipunek.ilosc<30);
 
 
+SELECT k.dataUr,k.nazwa, k.rodzaj FROM (SELECT rodzaj, MIN(dataUr) AS stara_data FROM kreatura GROUP BY rodzaj)daty_minimum JOIN kreatura k ON k.dataUr=daty_minimum.stara_data AND daty_minimum.rodzaj=k.rodzaj;
 
-(SELECT nazwa, dataUr, rodzaj FROM kreatura WHERE rodzaj='wiking' ORDER BY dataUr ASC LIMIT 8,1) UNION
-(SELECT nazwa, dataUr, rodzaj FROM kreatura WHERE rodzaj='wiking' ORDER BY dataUr ASC LIMIT 1);
-
-
-SELECT nazwa, dataUr, rodzaj FROM kreatura WHERE rodzaj='wiking' ORDER BY dataUr DESC LIMIT 1;
-
-SELECT nazwa, dataUr, rodzaj FROM kreatura WHERE dataUr=(SELECT MIN(dataUr) FROM kreatura) OR dataUr=(SELECT MAX(dataUr) FROM kreatura);
+SELECT n.dataUr, n.nazwa, n.rodzaj FROM (SELECT rodzaj, MAX(dataUr) AS nowa_data FROM kreatura GROUP BY rodzaj) daty_maximum JOIN kreatura n ON n.dataUr=daty_maximum.nowa_data AND daty_maximum.rodzaj=n.rodzaj;
 
 
-
-
+SELECT k.dataUr,k.nazwa, k.rodzaj FROM (SELECT rodzaj, MIN(dataUr) AS stara_data FROM kreatura GROUP BY rodzaj)daty_minimum JOIN kreatura k ON k.dataUr=daty_minimum.stara_data AND daty_minimum.rodzaj=k.rodzaj;
