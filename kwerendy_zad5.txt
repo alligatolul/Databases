@@ -1,0 +1,39 @@
+zad1.
+CREATE TABLE uczestnicy AS (SELECT * FROM wikingowie.uczestnicy);
+CREATE TABLE etapy_wyprawy AS (SELECT * FROM wikingowie.etapy_wyprawy);
+CREATE TABLE sektor AS (SELECT * FROM wikingowie.sektor);
+CREATE TABLE wyprawa AS (SELECT * FROM wikingowie.wyprawa);
+
+SELECT kreatura.nazwa FROM kreatura LEFT JOIN uczestnicy ON kreatura.idKreatury=uczestnicy.id_uczestnika WHERE id_uczestnika IS NULL;
+
+
+SELECT wyprawa.nazwa, SUM(ekwipunek.ilosc) as ilosc_ekwipunku FROM wyprawa JOIN uczestnicy ON wyprawa.id_wyprawy=uczestnicy.id_wyprawy JOIN ekwipunek ON uczestnicy.id_uczestnika=ekwipunek.idKreatury GROUP BY wyprawa.nazwa;
+
+zad2.
+
+SELECT wyprawa.nazwa, COUNT(uczestnicy.id_uczestnika) AS 'ilosc_uczestnikow', GROUP_CONCAT(kreatura.nazwa)AS 'nazwy_uczestnikow' FROM wyprawa JOIN uczestnicy ON wyprawa.id_wyprawy=uczestnicy.id_wyprawy JOIN kreatura ON kreatura.idKreatury=uczestnicy.id_uczestnika GROUP BY wyprawa.nazwa;
+
+SELECT wyprawa.nazwa, etapy_wyprawy.idEtapu, sektor.nazwa, kreatura.nazwa AS 'nazwa kierownika' FROM etapy_wyprawy JOIN wyprawa ON etapy_wyprawy.idWyprawy=wyprawa.id_wyprawy JOIN kreatura ON kreatura.idKreatury=wyprawa.kierownik JOIN sektor ON etapy_wyprawy.sektor=sektor.id_sektora ORDER BY wyprawa.data_rozpoczecia, etapy_wyprawy.kolejnosc ASC;
+
+
+
+zad3.
+
+SELECT sektor.nazwa, COUNT(etapy_wyprawy.sektor) FROM sektor LEFT JOIN etapy_wyprawy ON sektor.id_sektora=etapy_wyprawy.sektor GROUP BY sektor.nazwa;
+
+
+SELECT kreatura.nazwa, IF(COUNT(id_wyprawy)>0, 'bral udzial w wyprawie', 'nie bral udzialu w wyprawie' ) AS 'Udzial w wyprawie' FROM kreatura LEFT JOIN uczestnicy ON kreatura.idKreatury=uczestnicy.id_uczestnika GROUP BY kreatura.nazwa;
+
+
+zad4.
+
+SELECT wyprawa.nazwa, SUM(LENGTH(etapy_wyprawy.dziennik)) AS 'suma znakow w dzienniku' FROM wyprawa JOIN etapy_wyprawy ON wyprawa.id_wyprawy=etapy_wyprawy.idWyprawy GROUP BY wyprawa.nazwa HAVING SUM(LENGTH(etapy_wyprawy.dziennik))<400;
+
+SELECT wyprawa.nazwa, SUM(zasob.waga*zasob.ilosc)/COUNT(uczestnicy.id_uczestnika) AS 'srednia waga' FROM wyprawa JOIN uczestnicy ON uczestnicy.id_wyprawy=wyprawa.id_wyprawy JOIN ekwipunek ON uczestnicy.id_uczestnika=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu GROUP BY wyprawa.nazwa;
+
+zad5.
+
+SELECT kreatura.nazwa, (DATEDIFF(kreatura.dataUr, wyprawa.data_rozpoczecia))*-1 AS 'age in days before start of campaign', wyprawa.nazwa FROM kreatura JOIN uczestnicy ON uczestnicy.id_uczestnika=kreatura.idKreatury JOIN wyprawa ON uczestnicy.id_wyprawy=wyprawa.id_wyprawy JOIN etapy_wyprawy ON etapy_wyprawy.idWyprawy=wyprawa.id_wyprawy JOIN sektor ON sektor.id_sektora=etapy_wyprawy.sektor WHERE sektor.id_sektora=7;
+
+
+SELECT kreatura.nazwa, (DATEDIFF(kreatura.dataUr, wyprawa.data_rozpoczecia))*-1  AS 'age in days before start of campaign' FROM kreatura JOIN uczestnicy ON uczestnicy.id_uczestnika=kreatura.idKreatury JOIN wyprawa ON uczestnicy.id_wyprawy=wyprawa.id_wyprawy;

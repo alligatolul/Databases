@@ -8,7 +8,7 @@ SELECT AVG(YEAR(NOW())-YEAR(dataUr)) as sredni_wiek, rodzaj FROM kreatura GROUP 
 Zadanie 2.
 SELECT rodzaj, SUM(waga) as waga_zasobu FROM zasob GROUP BY rodzaj;
 
-SELECT nazwa, AVG(waga) as 'srednia waga' FROM zasob WHERE ilosc > 3 GROUP BY nazwa HAVING SUM(waga)>10;
+SELECT nazwa, AVG(waga) FROM zasob GROUP BY nazwa HAVING SUM(ilosc) >= 4 AND SUM(ilosc*waga)>10;
 
 SELECT COUNT(DISTINCT nazwa)AS unikalne_nazwy, rodzaj FROM zasob GROUP BY rodzaj HAVING COUNT(*)>1;
 
@@ -30,8 +30,9 @@ SELECT kreatura.nazwa FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipu
 SELECT CONCAT(s.nazwa,'-', (SELECT nazwa FROM kreatura e WHERE e.idKreatury=s.idKreatury+5)) FROM kreatura s INNER JOIN kreatura e ON s.idKreatury=e.idKreatury;
 
 Zadanie 5.
-
-mysql> SELECT kreatura.rodzaj, AVG(zasob.waga*zasob.ilosc) AS 'srednia waga zasobu' FROM kreatura JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury JOIN zasob ON ekwipunek.idZasobu= zasob.idZasobu WHERE kreatura.rodzaj NOT IN('malpa','waz') GROUP BY rodzaj HAVING SUM(ekwipunek.ilosc<30);
+SELECT kreatura.rodzaj, AVG(zasob.waga*ekwipunek.ilosc) 
+FROM ekwipunek NATURAL JOIN kreatura INNER JOIN zasob ON zasob.idZasobu=ekwipunek.idZasobu 
+GROUP BY kreatura.rodzaj HAVING SUM(ekwipunek.ilosc)<30 AND kreatura.rodzaj NOT IN("malpa","waz");
 
 
 SELECT k.dataUr,k.nazwa, k.rodzaj FROM (SELECT rodzaj, MIN(dataUr) AS stara_data FROM kreatura GROUP BY rodzaj)daty_minimum JOIN kreatura k ON k.dataUr=daty_minimum.stara_data AND daty_minimum.rodzaj=k.rodzaj;
